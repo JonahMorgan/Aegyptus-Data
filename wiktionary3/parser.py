@@ -497,6 +497,83 @@ def _extract_parent_words(etymology_text: str) -> List[str]:
     return result
 
 
+# Map from template name to relationship type used in inheritance networks.
+_PARENT_REL_MAP: Dict[str, str] = {
+    "inh": "INHERITED",
+    "inherited": "INHERITED",
+    "bor": "BORROWED",
+    "borrowed": "BORROWED",
+    "der": "DERIVED",
+    "derived": "DERIVED",
+    "root": "ROOT",
+    "compound": "COMPONENT",
+    "affix": "AFFIXED",
+}
+
+
+def _extract_parent_relations(etymology_text: str) -> List[Dict]:
+    """Return typed parent-word relationships extracted from etymology templates.
+
+    Like :func:`_extract_parent_words` but returns structured dicts instead of
+    plain ``"word (lang)"`` strings, preserving the relationship type so that
+    network builders can create correctly-labelled edges.
+
+    Each returned dict contains:
+
+    * ``"word"`` – the parent word form (str)
+    * ``"lang"`` – the source language code (str)
+    * ``"rel"``  – one of ``"INHERITED"``, ``"BORROWED"``, ``"DERIVED"``,
+      ``"ROOT"``, ``"COMPONENT"``, or ``"AFFIXED"``
+    """
+    if not etymology_text:
+        return []
+
+    relations: List[Dict] = []
+
+    try:
+        parsed = mwparserfromhell.parse(etymology_text)
+        for template in parsed.filter_templates():
+            name = str(template.name).strip().lower()
+            rel = _PARENT_REL_MAP.get(name)
+            if rel is None:
+                continue
+            params = list(template.params)
+
+            if name in INHERITANCE_TEMPLATES:
+                # Layout: |lang1|lang2|word|…
+                if len(params) < 2:
+                    continue
+                lang = str(params[1].value).strip()
+                word_val = str(params[2].value).strip() if len(params) > 2 else ""
+                if word_val and word_val not in ("-", ""):
+                    relations.append({"word": word_val, "lang": lang, "rel": rel})
+
+            elif name in COMPOUND_LIKE_TEMPLATES:
+                # Layout: |lang|word1|word2|…|gloss1=…|gloss2=…
+                if not params:
+                    continue
+                lang = str(params[0].value).strip()
+                for p in params[1:]:
+                    pname = str(p.name).strip()
+                    if re.match(r"^\d+$", pname):  # positional params only
+                        word_val = str(p.value).strip()
+                        if word_val and word_val not in ("-", ""):
+                            relations.append({"word": word_val, "lang": lang, "rel": rel})
+
+    except Exception as exc:  # noqa: BLE001
+        logger.debug("extract_parent_relations error: %s", exc)
+
+    # Deduplicate while preserving order.
+    seen: set[tuple] = set()
+    result: List[Dict] = []
+    for r in relations:
+        key = (r["word"], r["lang"], r["rel"])
+        if key not in seen:
+            seen.add(key)
+            result.append(r)
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Hieroglyph extraction
 # ---------------------------------------------------------------------------

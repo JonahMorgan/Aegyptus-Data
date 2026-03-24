@@ -21,6 +21,7 @@ from parser import (
     _extract_definitions,
     _extract_linked_terms,
     _extract_parent_words,
+    _extract_parent_relations,
     _clean_definition,
     _clean_etymology_text,
     _parse_etymology_number,
@@ -314,6 +315,86 @@ class TestExtractParentWords(unittest.TestCase):
         # Verify the public set contains the expected members.
         self.assertIn("compound", COMPOUND_LIKE_TEMPLATES)
         self.assertIn("affix", COMPOUND_LIKE_TEMPLATES)
+
+
+class TestExtractParentRelations(unittest.TestCase):
+    """Tests for the typed relationship variant of parent-word extraction."""
+
+    def test_inh_returns_inherited(self):
+        text = "From {{inh|cop|egy|ꜣ|t=vulture}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 1)
+        self.assertEqual(rels[0]["word"], "ꜣ")
+        self.assertEqual(rels[0]["lang"], "egy")
+        self.assertEqual(rels[0]["rel"], "INHERITED")
+
+    def test_bor_returns_borrowed(self):
+        text = "Borrowed from {{bor|cop|grc|ἄγγελος}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 1)
+        self.assertEqual(rels[0]["rel"], "BORROWED")
+        self.assertEqual(rels[0]["word"], "ἄγγελος")
+
+    def test_der_returns_derived(self):
+        text = "From {{der|egy|afa-pro|*ʔay-}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(rels[0]["rel"], "DERIVED")
+        self.assertEqual(rels[0]["lang"], "afa-pro")
+
+    def test_compound_returns_component(self):
+        text = "From {{compound|egy|ꜣwj|jb|gloss1=be long|gloss2=heart}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 2)
+        self.assertTrue(all(r["rel"] == "COMPONENT" for r in rels))
+        words = [r["word"] for r in rels]
+        self.assertIn("ꜣwj", words)
+        self.assertIn("jb", words)
+        # Named params must not appear as words.
+        self.assertFalse(any("gloss" in r["word"] for r in rels))
+
+    def test_affix_returns_affixed(self):
+        text = "From {{affix|egy|-j|-t}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 2)
+        self.assertTrue(all(r["rel"] == "AFFIXED" for r in rels))
+        words = [r["word"] for r in rels]
+        self.assertIn("-j", words)
+        self.assertIn("-t", words)
+
+    def test_cog_excluded(self):
+        text = "Compare {{cog|sem-pro|*ʔayy-}}."
+        self.assertEqual(_extract_parent_relations(text), [])
+
+    def test_empty_input(self):
+        self.assertEqual(_extract_parent_relations(""), [])
+
+    def test_mixed_templates_correct_types(self):
+        # Multiple templates in one etymology block.
+        text = "From {{inh|cop|egy|nfr}}; compare {{bor|cop|grc|καλός}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 2)
+        rel_by_word = {r["word"]: r["rel"] for r in rels}
+        self.assertEqual(rel_by_word["nfr"], "INHERITED")
+        self.assertEqual(rel_by_word["καλός"], "BORROWED")
+
+    def test_deduplication(self):
+        text = "From {{inh|cop|egy|nfr}} or {{inh|cop|egy|nfr}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 1)
+
+    def test_root_template(self):
+        text = "From {{root|egy|afa-pro|*ʔay-}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 1)
+        self.assertEqual(rels[0]["rel"], "ROOT")
+
+    def test_result_structure(self):
+        text = "From {{inh|cop|egy|ꜣ}}."
+        rels = _extract_parent_relations(text)
+        self.assertEqual(len(rels), 1)
+        self.assertIn("word", rels[0])
+        self.assertIn("lang", rels[0])
+        self.assertIn("rel", rels[0])
 
 
 class TestCleanDefinition(unittest.TestCase):
