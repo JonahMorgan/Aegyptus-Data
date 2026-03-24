@@ -150,18 +150,13 @@ class Crawler:
         # Load existing visited set for resumability.
         self._visited: Set[str] = self._load_visited()
 
-        # Open the records file in append mode.
-        self._records_fh = open(  # noqa: WPS515
-            self._records_path, "a", encoding="utf-8"
-        )
-
         # Count records already written (approximate, for logging).
-        self._records_written = (
-            self._records_path.stat().st_size
-            // 200  # rough bytes-per-record estimate
-            if self._records_path.exists() and self._records_path.stat().st_size
-            else 0
-        )
+        # Avoid calling stat() twice by storing the result.
+        self._records_written: int = 0
+        if self._records_path.exists():
+            file_size = self._records_path.stat().st_size
+            if file_size:
+                self._records_written = file_size // 200  # rough bytes-per-record estimate
 
     # ------------------------------------------------------------------
     # Public API
@@ -169,6 +164,15 @@ class Crawler:
 
     def crawl(self) -> None:
         """Run the full crawl.  Saves results incrementally as it goes."""
+        # Open the records file inside crawl() so the file handle is always
+        # closed when this method exits – whether normally or via exception.
+        with open(self._records_path, "a", encoding="utf-8") as records_fh:
+            self._records_fh = records_fh
+            self._run_crawl()
+        self._records_fh = None
+
+    def _run_crawl(self) -> None:
+        """Internal crawl loop (called with records file already open)."""
         queue: List[str] = self._build_initial_queue()
 
         logger.info(
@@ -210,7 +214,6 @@ class Crawler:
                 self._save_visited()
 
         self._save_visited()
-        self._records_fh.close()
         logger.info(
             "Crawl complete. %d pages processed, ~%d records written.",
             pages_processed,

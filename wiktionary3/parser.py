@@ -279,15 +279,16 @@ def _clean_definition(raw: str) -> str:
             elif name in ("ref", "r"):
                 parsed.replace(template, "")
             else:
-                # Generic fallback: use the first positional unnamed param, if any.
-                unnamed = [
-                    str(p.value).strip()
-                    for p in params
-                    if not str(p.name).strip().isdigit()
-                    or str(p.name).strip() == "1"
-                ]
-                replacement = unnamed[0] if unnamed else ""
-                # But don't replace with something that looks like a template param.
+                # Generic fallback: use the first positional param (name "1"), if any.
+                replacement = next(
+                    (
+                        str(p.value).strip()
+                        for p in params
+                        if str(p.name).strip() == "1"
+                    ),
+                    "",
+                )
+                # Don't substitute something that looks like a template argument list.
                 if "|" in replacement or "=" in replacement:
                     replacement = ""
                 parsed.replace(template, replacement)
