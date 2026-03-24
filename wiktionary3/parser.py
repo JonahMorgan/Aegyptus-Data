@@ -97,10 +97,15 @@ NON_CONTENT_SECTIONS: frozenset[str] = frozenset(
     }
 )
 
-# Etymology-template names whose first (positional 2nd) param is a parent word.
+# Etymology-template names whose positional layout is |lang1|lang2|word|…
+# (recipient language, source language, word form in source language).
 INHERITANCE_TEMPLATES: frozenset[str] = frozenset(
-    {"inh", "inherited", "bor", "borrowed", "der", "derived", "root", "affix"}
+    {"inh", "inherited", "bor", "borrowed", "der", "derived", "root"}
 )
+
+# Etymology-template names whose positional layout is |lang|word1|word2|…
+# (one language code, then one or more component words all in that language).
+COMPOUND_LIKE_TEMPLATES: frozenset[str] = frozenset({"compound", "affix"})
 
 # Link / list templates used in derived-terms / descendants / related sections.
 LINK_TEMPLATES: frozenset[str] = frozenset(
@@ -434,9 +439,16 @@ def _clean_etymology_text(raw: str) -> str:
 def _extract_parent_words(etymology_text: str) -> List[str]:
     """Return parent-word strings extracted from etymology template calls.
 
-    Only ``{{inh}}``, ``{{bor}}``, ``{{der}}``, ``{{root}}`` and ``{{affix}}``
-    are treated as *parent* relationships.  Cognates (``{{cog}}``) are
-    intentionally excluded.
+    Handles two template layouts:
+
+    * **Inheritance layout** (``{{inh}}``, ``{{bor}}``, ``{{der}}``, ``{{root}}``,
+      etc.): ``|lang1|lang2|word|…`` — param[1] is the source language code,
+      param[2] is the word form.
+    * **Compound layout** (``{{compound}}``, ``{{affix}}``): ``|lang|word1|word2|…``
+      — param[0] is the shared language code, each further positional param is
+      one component word.
+
+    Cognates (``{{cog}}``) are intentionally excluded.
 
     Each result has the form ``"word (lang-code)"``.
     """
@@ -449,20 +461,28 @@ def _extract_parent_words(etymology_text: str) -> List[str]:
         parsed = mwparserfromhell.parse(etymology_text)
         for template in parsed.filter_templates():
             name = str(template.name).strip().lower()
-            if name not in INHERITANCE_TEMPLATES:
-                continue
             params = list(template.params)
-            if len(params) < 2:
-                continue
-            # Positional param layout: |lang1|lang2|word|…
-            # params[0] = lang1 (recipient), params[1] = lang2 (source),
-            # params[2] = word form in source language.
-            lang = str(params[1].value).strip()
-            word_val = str(params[2].value).strip() if len(params) > 2 else ""
 
-            # Skip empty or placeholder values like "-".
-            if word_val and word_val not in ("-", ""):
-                parent_words.append(f"{word_val} ({lang})")
+            if name in INHERITANCE_TEMPLATES:
+                # Layout: |lang1|lang2|word|…
+                if len(params) < 2:
+                    continue
+                lang = str(params[1].value).strip()
+                word_val = str(params[2].value).strip() if len(params) > 2 else ""
+                if word_val and word_val not in ("-", ""):
+                    parent_words.append(f"{word_val} ({lang})")
+
+            elif name in COMPOUND_LIKE_TEMPLATES:
+                # Layout: |lang|word1|word2|…|gloss1=…|gloss2=…
+                if not params:
+                    continue
+                lang = str(params[0].value).strip()
+                for p in params[1:]:
+                    pname = str(p.name).strip()
+                    if re.match(r"^\d+$", pname):  # positional params only
+                        word_val = str(p.value).strip()
+                        if word_val and word_val not in ("-", ""):
+                            parent_words.append(f"{word_val} ({lang})")
 
     except Exception as exc:  # noqa: BLE001
         logger.debug("extract_parent_words error: %s", exc)

@@ -25,6 +25,7 @@ from parser import (
     _clean_etymology_text,
     _parse_etymology_number,
     _extract_hieroglyphs,
+    COMPOUND_LIKE_TEMPLATES,
 )
 
 
@@ -119,6 +120,21 @@ DEMOTIC_ENTRY = r"""==Demotic==
 
 ====Derived terms====
 [[pr-ꜥꜣ]]
+"""
+
+# Egyptian compound word (ꜣwj-jb, "be long of heart").
+COMPOUND_ENTRY = r"""==Egyptian==
+
+===Etymology===
+From {{compound|egy|ꜣwj|jb|gloss1=be long|gloss2=heart}}, thus literally 'be long of heart'.
+
+===Verb===
+{{egy-verb|2-lit|head=A-i-w-D36-Z1:F34}}
+
+# to be [[glad]], [[rejoice]]
+
+====Derived terms====
+* {{l|egy|ꜣwj-jb}}
 """
 
 
@@ -268,6 +284,36 @@ class TestExtractParentWords(unittest.TestCase):
 
     def test_empty_input(self):
         self.assertEqual(_extract_parent_words(""), [])
+
+    def test_compound_two_components(self):
+        # {{compound|egy|ꜣwj|jb|gloss1=be long|gloss2=heart}}
+        # Both positional words should appear as parents with the shared lang code.
+        text = "From {{compound|egy|ꜣwj|jb|gloss1=be long|gloss2=heart}}."
+        parents = _extract_parent_words(text)
+        self.assertIn("ꜣwj (egy)", parents)
+        self.assertIn("jb (egy)", parents)
+        # Named gloss params must not be included.
+        self.assertFalse(any("gloss" in pw for pw in parents))
+
+    def test_compound_three_components(self):
+        # {{compound|egy|ꜣḫ|n|jtn|gloss1=effective|gloss2=for|gloss3=Aten}}
+        text = "From {{compound|egy|ꜣḫ|n|jtn|gloss1=effective|gloss2=for|gloss3=Aten}}."
+        parents = _extract_parent_words(text)
+        self.assertIn("ꜣḫ (egy)", parents)
+        self.assertIn("n (egy)", parents)
+        self.assertIn("jtn (egy)", parents)
+
+    def test_affix_template(self):
+        # {{affix|egy|-j|-t}} → two morpheme parents
+        text = "From {{affix|egy|-j|-t}}."
+        parents = _extract_parent_words(text)
+        self.assertIn("-j (egy)", parents)
+        self.assertIn("-t (egy)", parents)
+
+    def test_compound_like_templates_exported(self):
+        # Verify the public set contains the expected members.
+        self.assertIn("compound", COMPOUND_LIKE_TEMPLATES)
+        self.assertIn("affix", COMPOUND_LIKE_TEMPLATES)
 
 
 class TestCleanDefinition(unittest.TestCase):
@@ -426,6 +472,25 @@ class TestWiktionaryParser(unittest.TestCase):
         self.assertGreater(len(noun["definitions"]), 0)
         combined = " ".join(noun["definitions"]).lower()
         self.assertTrue("house" in combined or "temple" in combined)
+
+    # ------------------------------------------------------------------
+    # Compound entry
+    # ------------------------------------------------------------------
+
+    def test_compound_parent_words(self):
+        records = self.parser.parse(COMPOUND_ENTRY, "ꜣwj-jb", "Egyptian")
+        self.assertGreater(len(records), 0)
+        verb = records[0]
+        self.assertIn("ꜣwj (egy)", verb["parent_words"])
+        self.assertIn("jb (egy)", verb["parent_words"])
+
+    def test_compound_no_gloss_in_parent_words(self):
+        records = self.parser.parse(COMPOUND_ENTRY, "ꜣwj-jb", "Egyptian")
+        verb = records[0]
+        self.assertFalse(
+            any("gloss" in pw for pw in verb["parent_words"]),
+            f"gloss leaked into parent_words: {verb['parent_words']}",
+        )
 
     # ------------------------------------------------------------------
     # Missing language section
