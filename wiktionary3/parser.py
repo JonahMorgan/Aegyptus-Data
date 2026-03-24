@@ -23,6 +23,7 @@ Output record schema
     "derived_terms":   list[str],
     "descendants":     list[str],
     "related_terms":   list[str],
+    "hieroglyphs":     list[str],    # MdC codes from head= param and {{egy-hieroforms|…}}
 }
 """
 
@@ -477,6 +478,76 @@ def _extract_parent_words(etymology_text: str) -> List[str]:
 
 
 # ---------------------------------------------------------------------------
+# Hieroglyph extraction
+# ---------------------------------------------------------------------------
+
+_HIERO_TAGS_RE = re.compile(r"</?hiero>", re.IGNORECASE)
+
+
+def _strip_hiero_tags(s: str) -> str:
+    """Remove ``<hiero>`` / ``</hiero>`` wrapper tags, returning the bare MdC code."""
+    return _HIERO_TAGS_RE.sub("", s).strip()
+
+
+def _extract_hieroglyphs(pos_content: str) -> List[str]:
+    """Return MdC hieroglyph codes found in a POS section.
+
+    Sources, in order:
+
+    1. The ``head=`` parameter of Egyptian POS headword templates
+       (e.g. ``{{egy-noun|m|head=<hiero>A-a-w-Y1V</hiero>}}``).
+    2. Positional parameters of ``{{egy-hieroforms|…}}`` alternative-form
+       tables (each unnamed param holds one MdC code).
+
+    ``<hiero>…</hiero>`` wrapper tags are stripped; the bare MdC code is
+    returned.  Results are deduplicated while preserving order.
+    """
+    hieroglyphs: List[str] = []
+
+    # Templates whose ``head=`` parameter should NOT be treated as a
+    # hieroglyph source (they are not POS headword templates).
+    _HEAD_SKIP: frozenset[str] = frozenset(
+        {"egy-hieroforms", "egy-decl-noun", "egy-h", "egy-ipa-e", "egy-ipa"}
+    )
+
+    try:
+        parsed = mwparserfromhell.parse(pos_content)
+        for template in parsed.filter_templates():
+            name = str(template.name).strip().lower()
+            params = list(template.params)
+
+            if name.startswith("egy-") and name not in _HEAD_SKIP:
+                # POS headword template — grab the head= parameter.
+                for p in params:
+                    if str(p.name).strip().lower() == "head":
+                        code = _strip_hiero_tags(str(p.value).strip())
+                        if code and code not in hieroglyphs:
+                            hieroglyphs.append(code)
+                        break
+
+            elif name == "egy-hieroforms":
+                # Alternative-form table — positional (unnamed) params are MdC codes.
+                for p in params:
+                    pname = str(p.name).strip()
+                    if re.match(r"^\d+$", pname):
+                        code = _strip_hiero_tags(str(p.value).strip())
+                        if code and code not in hieroglyphs:
+                            hieroglyphs.append(code)
+
+    except Exception:  # noqa: BLE001
+        # Regex fallback: pick up head= values when mwparserfromhell fails.
+        for m in re.finditer(
+            r"head\s*=\s*(?:<hiero>([^<]+)</hiero>|([A-Za-z0-9:*&\-_.!]+))",
+            pos_content,
+        ):
+            code = (m.group(1) or m.group(2) or "").strip()
+            if code and code not in hieroglyphs:
+                hieroglyphs.append(code)
+
+    return hieroglyphs
+
+
+# ---------------------------------------------------------------------------
 # Record assembly
 # ---------------------------------------------------------------------------
 
@@ -495,6 +566,7 @@ def _build_record(
     sections = _split_sections(pos_content)
 
     definitions = _extract_definitions(pos_content)
+    hieroglyphs = _extract_hieroglyphs(pos_content)
 
     derived_terms: List[str] = []
     descendants: List[str] = []
@@ -522,6 +594,7 @@ def _build_record(
         "derived_terms": derived_terms,
         "descendants": descendants,
         "related_terms": related_terms,
+        "hieroglyphs": hieroglyphs,
     }
 
 
@@ -617,6 +690,7 @@ class WiktionaryParser:
                             "derived_terms": [],
                             "descendants": [],
                             "related_terms": [],
+                            "hieroglyphs": _extract_hieroglyphs(etym_raw),
                         }
                     )
                 continue

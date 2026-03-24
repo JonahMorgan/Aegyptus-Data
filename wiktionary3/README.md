@@ -42,7 +42,7 @@ wiktionary3/
 ├── scraper.py        # Wiktionary MediaWiki API fetcher
 ├── parser.py         # Wikitext → structured records
 ├── crawler.py        # BFS crawler with visited-set deduplication
-├── test_parser.py    # Unit tests (53 tests)
+├── test_parser.py    # Unit tests (65 tests)
 └── requirements.txt  # Python dependencies
 ```
 
@@ -177,7 +177,7 @@ all sub-sections as part of their parent.
 python -m pytest test_parser.py -v
 ```
 
-All 53 tests cover:
+All 65 tests cover:
 * Section splitting
 * Language-section extraction (including aliases)
 * Definition extraction (templates, sub-definitions)
@@ -185,6 +185,7 @@ All 53 tests cover:
 * Parent-word extraction from etymology templates
 * Definition cleaning (labels, dates, taxa, wikilinks)
 * Etymology number parsing
+* Hieroglyph extraction (`head=` params, `{{egy-hieroforms|…}}` positional params)
 * Full end-to-end parser on Egyptian (multi-etymology), Coptic, and Demotic
   fixture pages
 * Record schema completeness

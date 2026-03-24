@@ -24,6 +24,7 @@ from parser import (
     _clean_definition,
     _clean_etymology_text,
     _parse_etymology_number,
+    _extract_hieroglyphs,
 )
 
 
@@ -31,7 +32,7 @@ from parser import (
 # Sample wikitext fixtures
 # ---------------------------------------------------------------------------
 
-# Minimal Egyptian entry with multiple etymologies (mirrors the real ꜣ page).
+# Minimal Egyptian entry with multiple etymologies (inspired by the real ꜣ page).
 EGYPTIAN_MULTI_ETYM = r"""==Egyptian==
 [[File:Egyptian vulture.jpg|thumb|vulture]]
 
@@ -450,6 +451,7 @@ class TestWiktionaryParser(unittest.TestCase):
             "derived_terms",
             "descendants",
             "related_terms",
+            "hieroglyphs",
         }
         records = self.parser.parse(EGYPTIAN_MULTI_ETYM, "ꜣ", "Egyptian")
         self.assertGreater(len(records), 0)
@@ -466,6 +468,85 @@ class TestWiktionaryParser(unittest.TestCase):
         records = self.parser.parse(EGYPTIAN_MULTI_ETYM, "ꜣ", "Egyptian")
         for rec in records:
             self.assertIsInstance(rec["definitions"], list)
+
+    def test_hieroglyphs_list(self):
+        records = self.parser.parse(EGYPTIAN_MULTI_ETYM, "ꜣ", "Egyptian")
+        for rec in records:
+            self.assertIsInstance(rec["hieroglyphs"], list)
+
+    def test_egyptian_noun_hieroglyphs_from_head(self):
+        # The noun entry has {{egy-noun|m|head=A}} → hieroglyphs should contain "A"
+        records = self.parser.parse(EGYPTIAN_MULTI_ETYM, "ꜣ", "Egyptian")
+        noun = next(r for r in records if r["part_of_speech"].lower() == "noun")
+        self.assertIn("A", noun["hieroglyphs"])
+
+    def test_egyptian_noun_hieroglyphs_from_hieroforms(self):
+        # The noun entry has {{egy-hieroforms|A-Z1:H_SPACE|read1=ꜣ}}
+        records = self.parser.parse(EGYPTIAN_MULTI_ETYM, "ꜣ", "Egyptian")
+        noun = next(r for r in records if r["part_of_speech"].lower() == "noun")
+        self.assertIn("A-Z1:H_SPACE", noun["hieroglyphs"])
+
+    def test_egyptian_particle_hieroglyphs_from_head(self):
+        # The particle entry has {{egy-part|enclitic|head=A}}
+        records = self.parser.parse(EGYPTIAN_MULTI_ETYM, "ꜣ", "Egyptian")
+        particle = next(r for r in records if r["part_of_speech"].lower() == "particle")
+        self.assertIn("A", particle["hieroglyphs"])
+
+
+# ---------------------------------------------------------------------------
+# TestExtractHieroglyphs
+# ---------------------------------------------------------------------------
+
+
+class TestExtractHieroglyphs(unittest.TestCase):
+    def test_head_bare_mdc(self):
+        text = "{{egy-noun|m|head=A}}\n# a bird\n"
+        result = _extract_hieroglyphs(text)
+        self.assertIn("A", result)
+
+    def test_head_with_hiero_tags(self):
+        text = "{{egy-verb|3-lit|head=<hiero>A-a-w-D54</hiero>}}\n# to go\n"
+        result = _extract_hieroglyphs(text)
+        self.assertIn("A-a-w-D54", result)
+        # Tags must be stripped
+        self.assertNotIn("<hiero>", result[0])
+
+    def test_hieroforms_bare_mdc(self):
+        text = "{{egy-hieroforms|A-Z1:H_SPACE|read1=ꜣ}}\n"
+        result = _extract_hieroglyphs(text)
+        self.assertIn("A-Z1:H_SPACE", result)
+
+    def test_hieroforms_with_hiero_tags(self):
+        text = "{{egy-hieroforms|<hiero>Ab-b-W:D54</hiero>|read1=ꜣbw|<hiero>Ab-w-E26</hiero>|read2=ꜣbw}}\n"
+        result = _extract_hieroglyphs(text)
+        self.assertIn("Ab-b-W:D54", result)
+        self.assertIn("Ab-w-E26", result)
+
+    def test_no_hieroglyphs_empty(self):
+        self.assertEqual(_extract_hieroglyphs(""), [])
+
+    def test_deduplication(self):
+        text = (
+            "{{egy-noun|m|head=A}}\n"
+            "{{egy-hieroforms|A|read1=ꜣ}}\n"
+        )
+        result = _extract_hieroglyphs(text)
+        self.assertEqual(result.count("A"), 1)
+
+    def test_egy_h_template_not_extracted(self):
+        # {{egy-h|…}} is for inline hieroglyph display, not headword encoding
+        text = "[[File:x.jpg|thumb|{{egy-h|A-Z1}}]]\n{{egy-noun|m|head=N1}}\n# a noun\n"
+        result = _extract_hieroglyphs(text)
+        self.assertNotIn("A-Z1", result)
+        self.assertIn("N1", result)
+
+    def test_hieroforms_named_params_skipped(self):
+        # read*, date*, note* named params should not appear in the result
+        text = "{{egy-hieroforms|A-D56|read1=ꜣ|date1=Old Kingdom|note1=rare}}\n"
+        result = _extract_hieroglyphs(text)
+        self.assertIn("A-D56", result)
+        for val in result:
+            self.assertFalse(val.startswith("read") or val.startswith("date") or val.startswith("note"))
 
 
 # ---------------------------------------------------------------------------
