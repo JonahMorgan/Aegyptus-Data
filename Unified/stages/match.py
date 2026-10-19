@@ -160,15 +160,30 @@ def run(store):
             store.entries[eid]["candidates"] = cands[:8]
             stats[f"{lang}_ambiguous"] += 1
 
-    # leftover provisional entries from different sources describing the same word
+    # leftover provisional entries from different sources describing the same word:
+    # merge only across sources, and only when their English glosses don't contradict each other
     groups = defaultdict(list)
     for e in list(store.entries.values()):
         if _provisional(e["id"]) and e.get("key") and "candidates" not in e:
             groups[(e["lang"], e["key"])].append(e["id"])
     for ids in groups.values():
-        if len(ids) > 1:
-            ids.sort(key=lambda i: SOURCE_ORDER.index(i.split(":")[1]) if i.split(":")[1] in SOURCE_ORDER else 9)
-            for other in ids[1:]:
-                store.merge(other, ids[0])
+        if len(ids) < 2:
+            continue
+        ids.sort(key=lambda i: SOURCE_ORDER.index(i.split(":")[1]) if i.split(":")[1] in SOURCE_ORDER else 9)
+        heads = []  # one surviving entry per distinct sense
+        for i in ids:
+            gi = _gloss_words(store.entries[i])
+            target = None
+            for h in heads:
+                if h.split(":")[1] == i.split(":")[1]:
+                    continue  # never fold two entries of the same source together
+                gh = _gloss_words(store.entries[h])
+                if not gi or not gh or _overlap(gi, gh) > 0:
+                    target = h
+                    break
+            if target:
+                store.merge(i, target)
                 stats["provisional_merged_together"] += 1
+            else:
+                heads.append(i)
     return dict(stats)

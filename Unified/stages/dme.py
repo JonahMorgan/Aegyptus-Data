@@ -24,6 +24,7 @@ def _is_garbage(translit):
 def run(store):
     stats = Counter()
     seen = set()
+    sense_ids = {}  # (translit, definition) -> provisional id; spelling variants share an id, homographs don't
     for x in load_json(DME_JSON):
         mdc = (x.get("transliteration") or "").strip()
         if not mdc or _is_garbage(mdc):
@@ -35,7 +36,11 @@ def run(store):
             continue
         seen.add(sig)
         uni = mdc_to_unicode(mdc)
-        eid = f"egy:dme:{uni}"
+        defn = " ".join((x.get("definition") or "").lower().split())
+        eid = sense_ids.get((uni, defn))
+        if eid is None:
+            n = sum(1 for k in sense_ids if k[0] == uni)
+            eid = sense_ids[(uni, defn)] = f"egy:dme:{uni}" + (f"#{n + 1}" if n else "")
         gardiner = " ".join((x.get("gardiner") or "").split())
         forms = [{"form": uni, "gardiner": gardiner, "source": "dme"}] if gardiner else []
         store.add_entry(eid, "egy", uni, source="dme", key=egy_key(uni), pos=_pos(x.get("definition")),

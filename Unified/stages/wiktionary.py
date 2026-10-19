@@ -34,6 +34,31 @@ def key_for(lang, word):
     return coptic_key(word) if lang == "cop" else egy_key(word) if lang in ("egy", "dem") else word
 
 
+# template name -> index of the word among its |-separated parts ({{l|lang|word}}, {{t2i-Egyd|word|signs}})
+_PLACEHOLDERS = {"egyptianterm", "term", "word"}
+_WORD_PARAM = {"l": 2, "m": 2, "lang": 2, "t2i-Egyd": 1, "t2i": 1}
+
+
+def clean_word(word, lang=None):
+    """Unwrap wikitext left in a word: {{l|egx-dem|pr-ꜥꜣ}} -> pr-ꜥꜣ, {{t2i-Egyd|ꜥwy|Z1-2}} -> ꜥwy.
+    Hieroglyph-only markup and Coptic-coded words without Coptic letters are dropped."""
+    word = (word or "").strip()
+    if "<hiero>" in word or "[[" in word or word.lower() in _PLACEHOLDERS:
+        return None
+    word = re.sub(r"^Reconstruction:[^/]+/", "*", word)  # reconstructed forms keep a leading *
+    if word.startswith("{{") and word.endswith("}}"):
+        parts = word[2:-2].split("|")
+        idx = _WORD_PARAM.get(parts[0])
+        if idx is None or len(parts) <= idx or "=" in parts[idx]:
+            return None
+        word = parts[idx].strip()
+    if "{{" in word or "}}" in word:
+        return None
+    if lang == "cop" and not re.search(r"[Ⲁ-⳿Ϣ-ϯ]", word):
+        return None
+    return word or None
+
+
 def _desc_word(node):
     """Descendant word, falling back to alt/alt1.. when the positional word is missing or corrupted (e.g. '665')."""
     word = (node.get("word") or "").strip()
@@ -69,7 +94,7 @@ def _edge_type(child_lang, parent_lang, borrowed):
 def _add_descendants(store, parent_id, nodes, stats, parent_lang="egy"):
     for node in nodes or []:
         lang, dialect = wikt_lang(node.get("language") or "")
-        word = _desc_word(node)
+        word = clean_word(_desc_word(node), lang)
         if not word or not lang:
             _add_descendants(store, parent_id, node.get("children"), stats, parent_lang)
             continue
@@ -102,6 +127,7 @@ def _etymology_ids(lang, lemma, page):
 def load_egyptian(store, stats):
     data = load_json(WIKT / "egyptian_lemmas_parsed_mwp.json")
     for lemma, page in data.items():
+        lemma = re.sub(r"^Reconstruction:[^/]+/", "*", lemma)  # reconstruction pages: keep the form, marked *
         tla = _tla_ids(page.get("full_wikitext"))
         ids = _etymology_ids("egy", lemma, page)
         for eid, ety in ids:
@@ -116,7 +142,7 @@ def load_egyptian(store, stats):
                                                          ("date", alt.get("date")),
                                                          ("source", "wiktionary")) if v})
                 for w in defn.get("derived_terms") or []:
-                    w = w if isinstance(w, str) else (w.get("word") or w.get("transliteration"))
+                    w = clean_word(w if isinstance(w, str) else (w.get("word") or w.get("transliteration")))
                     if w:
                         store.add_entry(node_id("egy", w), "egy", w, source="wiktionary", key=egy_key(w))
                         store.add_relation(node_id("egy", w), eid, "derived_from", "wiktionary")
@@ -140,8 +166,8 @@ def _etymology_links(store, eid, wikitext, stats, own_lang):
     for sec in SECTION.findall(wikitext or ""):
         for m in ETYM_TEMPLATE.finditer(sec):
             kind, _, src_code, word = m.groups()
-            word = word.strip()
             lang, _ = wikt_lang(src_code)
+            word = clean_word(word, lang)
             if not word or word == "-":
                 continue
             did = node_id(lang, word)
@@ -154,6 +180,7 @@ def _etymology_links(store, eid, wikitext, stats, own_lang):
 def load_other(store, stats, lang, filename):
     data = load_json(WIKT / filename)
     for lemma, page in data.items():
+        lemma = re.sub(r"^Reconstruction:[^/]+/", "*", lemma)  # reconstruction pages: keep the form, marked *
         ids = _etymology_ids(lang, lemma, page)
         for eid, ety in ids:
             senses, pos = [], None

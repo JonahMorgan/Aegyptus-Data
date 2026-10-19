@@ -8,6 +8,28 @@ python Unified/build.py            # -> Unified/output/{entries,relations}.jsonl
 python Unified/build.py --public   # same, minus glosses from copyrighted sources -> Unified/output/public/
 ```
 
+Per-source dictionaries (same schema, before any cross-source matching):
+
+```
+python Unified/export_sources.py   # -> Unified/output/sources/<source>/{entries,relations}.jsonl + summary.json
+```
+
+## Analysis
+
+Run after `build.py`, in this order (each writes `.md` + `.json` to `Unified/output/reports/`):
+
+```
+python Unified/analysis/compare.py             # coverage, attach rates, gloss + etymology agreement between sources
+python Unified/analysis/correspondence.py      # learned Egyptian→Demotic→Coptic sound correspondences
+python Unified/analysis/etymology_scoring.py   # held-out accuracy, ORAEC-vs-Wiktionary disputes, low-scoring links
+python Unified/analysis/suggest.py             # candidate etymologies for Coptic words no source etymologizes
+```
+
+The correspondence model is a stochastic edit distance trained by hard EM on ORAEC's ID-linked pairs, seeded
+from letter co-occurrence (no hand-written phonetic values). `etymology_scoring.py` reports its held-out
+accuracy; `suggest.py` reports how often it recovers hidden known etymologies, so the suggestion list can be
+read with a known hit rate. Suggestions are never written into the dictionary.
+
 ## Pipeline
 
 | Stage | Reads | Contributes |
@@ -33,10 +55,14 @@ python "Coptic Etymological Dictionary/ocr_ced.py" --all     # deferred: Tessera
 
 ## Measured quality
 
-Where ORAEC (by TLA ID) and Wiktionary (via the matcher) both give a Coptic word's ancestor, Wiktionary's
-resolved parent lies on ORAEC's chain for ~77% (330 / 426). ~8% pick a same-spelling homograph with a different
-TLA ID and ~15% differ outright (a mix of real scholarly disagreement and matcher error). Treat single-source
-`descends_from` edges from Wiktionary accordingly; `sources` on each relation shows who asserts it.
+Current figures are regenerated in `output/reports/` on every run; as of the last build:
+
+- Coptic etymologies: Wiktionary (via the matcher) names the same ancestor as ORAEC for 82% of shared words, 92% counting
+  spelling variants with the same strong consonants (`comparison.md`). ORAEC and Coptic Dictionary Online agree on all
+  but one, because both derive from TLA.
+- Sound-correspondence model: true links beat random same-stage lemmas with AUC 0.96–0.99 (`etymology_scoring.md`).
+- Suggestions: 65% top-1 / 88% top-3 on hidden ORAEC etymologies whose ancestor passes the gloss filter; only ~1/3 do,
+  because most TLA Egyptian lemmas have no English gloss (`suggestions.md`).
 
 ## Known gaps
 
@@ -46,3 +72,5 @@ TLA ID and ~15% differ outright (a mix of real scholarly disagreement and matche
 - Černý (CED) OCR is deferred. `ced_page_index.json` (page → expected lemma IDs + Crum refs) is ready for whatever OCR engine is chosen; `ocr_ced.py` is an unrun Tesseract draft whose Crum-anchor alignment can be reused.
 - Greek has two unreconciled ID spaces: `grc:<DDGLC id>` (BBAW) and `grc:wikt:<word>` (Wiktionary).
 - Wiktionary's descendant trees bring in later loans (Greek, Latin, Arabic, English...) as `borrowed_from` entries.
+- BBAW lists some lemmas twice (e.g. ϭⲱⲛⲧ C7788/C7789); an etymology on one is not propagated to the other.
+- Most TLA Egyptian lemmas carry no gloss here, which limits gloss-based matching and suggestions.
