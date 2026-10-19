@@ -2,6 +2,13 @@
 
 This directory contains tools for collecting and parsing Egyptian language data from Wiktionary.
 
+## Pipeline
+
+`wiktionary_get.py` (fetch) → `parse_with_mwparserfromhell.py` → `*_lemmas_parsed_mwp.json` →
+`build_lemma_networks_v2.py` → `lemma_networks_v2.json` → `visualize/`.
+All outputs are UTF-8. Older builders and outputs are in `archive/`; scratch scripts and logs in `debug/` (gitignored).
+The parsed files also feed `Unified/stages/wiktionary.py`.
+
 ## TODO
 
 - [ ] Make a new network builder that ONLY cares about descends nodes and alternate forms

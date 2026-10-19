@@ -9,12 +9,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "honey"
+              "honey\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲉⲃⲓⲱ"
+                "word": "ⲉⲃⲓⲱ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -38,7 +45,8 @@
           {
             "part_of_speech": "proper noun",
             "parameters": "",
-            "definitions": []
+            "definitions": [],
+            "quotes": []
           }
         ],
         "etymology_number": null
@@ -62,20 +70,59 @@
             "parameters": "",
             "definitions": [
               "doorkeeper",
-              "pastophorus"
+              "pastophorus\n\nDescendants\n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "grc",
-                "word": "παστοφόρος"
-              },
-              {
-                "language": "la",
-                "word": "pastophorus"
-              },
-              {
-                "language": "en",
-                "word": "pastophorus"
+                "word": "παστοφόρος",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "calque",
+                "params": {
+                  "calque": "1"
+                },
+                "children": [
+                  {
+                    "language": "la",
+                    "word": "pastophorus",
+                    "level": 1,
+                    "template_type": "desc",
+                    "edge_type": "borrowed",
+                    "params": {
+                      "bor": "1"
+                    },
+                    "children": [
+                      {
+                        "language": "en",
+                        "word": "pastophorus",
+                        "level": 2,
+                        "template_type": "desc",
+                        "edge_type": "borrowed",
+                        "params": {
+                          "bor": "1"
+                        },
+                        "children": [],
+                        "dialect": null
+                      },
+                      {
+                        "language": "en",
+                        "word": "pastophore",
+                        "level": 2,
+                        "template_type": "desc",
+                        "edge_type": "borrowed",
+                        "params": {
+                          "bor": "1"
+                        },
+                        "children": [],
+                        "dialect": null
+                      }
+                    ],
+                    "dialect": null
+                  }
+                ],
+                "dialect": null
               }
             ]
           }
@@ -109,16 +156,29 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "milk"
+              "milk\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲉⲣⲱϯ"
+                "word": "ⲉⲣⲱϯ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲉⲣⲱⲧⲉ"
+                "word": "ⲉⲣⲱⲧⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -145,16 +205,29 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "father"
+              "father\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲓⲱⲧ"
+                "word": "ⲓⲱⲧ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲉⲓⲱⲧ"
+                "word": "ⲉⲓⲱⲧ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -187,7 +260,8 @@
             "parameters": "",
             "definitions": [
               "Ereshkigal"
-            ]
+            ],
+            "quotes": []
           }
         ],
         "etymology_number": null,
@@ -219,20 +293,39 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "baboon"
+              "baboon\n\nDescendants\n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲉⲛ"
+                "word": "ⲉⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲁⲛⲁ"
+                "word": "ⲁⲛⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲏⲛ"
+                "word": "ⲏⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -266,12 +359,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "fly "
+              "fly \n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲁϥ"
+                "word": "ⲁϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -309,32 +409,89 @@
               "place, district, quarter",
               "temple",
               "holder, container",
-              "[astrology] house, one of the twelve equal divisions of the ecliptic through which celestial bodies pass"
+              "[astrology] house, one of the twelve equal divisions of the ecliptic through which celestial bodies pass\n\nDescendants\n \n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-akh",
+                "word": "ⲏⲉⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲏⲉⲓ"
+                "word": "ⲏⲉⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲏⲉⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -363,16 +520,29 @@
               "both arms or hands, the arms collectively",
               "arm, hand",
               "item, portion, piece",
-              "pair"
+              "pair\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲏⲓ"
+                "word": "ⲏⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -404,16 +574,29 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "school"
+              "school\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲁⲛⲍⲏⲃ"
+                "word": "ⲁⲛⲍⲏⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲁⲛⲥⲏⲃⲉ"
+                "word": "ⲁⲛⲥⲏⲃⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -447,19 +630,32 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "river, canal"
+              "river, canal\n\nAlternative forms\n \n\nDerived terms\n yr-ꜥꜣ\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "derived_terms": [
               "yr-ꜥꜣ"
             ],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲓⲟⲣ"
+                "word": "ⲓⲟⲣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲉⲓⲟⲟⲣ"
+                "word": "ⲉⲓⲟⲟⲣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -493,36 +689,98 @@
             "part_of_speech": "proper noun",
             "parameters": "",
             "definitions": [
-              "the Nile"
+              "the Nile\n\nAlternative forms\n \n\nDescendants\n \n \n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲓⲉⲣⲟ"
+                "word": "ⲓⲉⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲓⲁⲣⲟ"
+                "word": "ⲓⲁⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲓⲉⲣⲁ"
+                "word": "ⲓⲉⲣⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲉⲓⲉⲣⲟ"
+                "word": "ⲉⲓⲉⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲓⲉⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "peo",
-                "word": "𐎱𐎡𐎼𐎠𐎺"
+                "word": "𐎱𐎡𐎼𐎠𐎺",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "tr": "Pirāva",
+                  "bor": "1"
+                },
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "elx-ach",
-                "word": "[<sup>h</sup>Pi-ra]-ma"
+                "word": "[<sup>h</sup>Pi-ra]-ma",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "tr": "[<sup>h</sup>Pi-ra]-ma",
+                  "bor": "1"
+                },
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "akk-nas",
-                "word": "𒅀𒊒𒀪𒌑"
+                "word": "𒅀𒊒𒀪𒌑",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "tr": "ia-ru-ʾu-u₂",
+                  "bor": "1"
+                },
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -556,20 +814,39 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "Greek "
+              "Greek \n\nDescendants\n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲟⲩⲁⲉⲓⲁⲛⲓⲛ"
+                "word": "ⲟⲩⲁⲉⲓⲁⲛⲓⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲟⲩⲉⲓⲛⲓⲛ"
+                "word": "ⲟⲩⲉⲓⲛⲓⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲟⲩⲁⲓⲛⲓⲛ"
+                "word": "ⲟⲩⲁⲓⲛⲓⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -609,7 +886,8 @@
             "parameters": "",
             "definitions": [
               "messenger"
-            ]
+            ],
+            "quotes": []
           }
         ],
         "etymology_number": null,
@@ -641,19 +919,27 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "rose "
+              "rose \n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲟⲩⲣⲧ"
+                "word": "ⲟⲩⲣⲧ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           },
           {
             "part_of_speech": "proper noun",
             "parameters": "",
-            "definitions": []
+            "definitions": [],
+            "quotes": []
           }
         ],
         "etymology_number": null
@@ -678,15 +964,62 @@
           {
             "part_of_speech": "proper noun",
             "parameters": "",
-            "definitions": [],
+            "definitions": [
+              "Descendants\n \n "
+            ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "grc-koi",
-                "word": "Ὀσυμανδύας"
+                "word": "Ὀσυμανδύας",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "q1": "semi-learned",
+                  "bor": "1"
+                },
+                "children": [],
+                "dialect": null
               },
               {
-                "language": "en",
-                "word": "Ozymandias"
+                "language": "grc-koi",
+                "word": "Ζμανρής",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "q1": "semi-learned",
+                  "bor": "1"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "grc-koi",
+                "word": "Σμανρής",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "q1": "semi-learned",
+                  "bor": "1"
+                },
+                "children": [
+                  {
+                    "language": "en",
+                    "word": "Ozymandias",
+                    "level": 1,
+                    "template_type": "desc",
+                    "edge_type": "borrowed",
+                    "params": {
+                      "bor": "1"
+                    },
+                    "children": [],
+                    "dialect": null
+                  }
+                ],
+                "dialect": null
               }
             ],
             "alternative_forms": [
@@ -725,12 +1058,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "servant"
+              "servant\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲃⲱⲕ"
+                "word": "ⲃⲱⲕ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -752,7 +1092,8 @@
             "parameters": "",
             "definitions": [
               "work"
-            ]
+            ],
+            "quotes": []
           }
         ],
         "etymology_number": 2,
@@ -783,6 +1124,12 @@
             "parameters": "",
             "definitions": [
               "Alternative form of p.t"
+            ],
+            "quotes": [],
+            "alternative_forms_from_definitions": [
+              {
+                "form": "p.t"
+              }
             ]
           }
         ],
@@ -811,13 +1158,30 @@
             "definitions": [
               "temple",
               "house",
-              "palace"
+              "palace\n\nUsage notes\nThis word is almost entirely restricted to compounds. Contrary to earlier Egyptian, the ordinary word for house in Demotic is ꜥ.wy.\n\nAlternative forms\n \n\nDescendants\n "
             ],
+            "quotes": [],
             "usage_notes": "This word is almost entirely restricted to compounds. Contrary to earlier Egyptian, the ordinary word for house in Demotic is ꜥ.wy.",
             "descendants": [
               {
                 "language": "cop-sah",
-                "word": "ⲡⲉⲣ-"
+                "word": "ⲡⲉⲣ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "-ⲡⲱⲣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -851,32 +1215,129 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "king, pharaoh"
+              "king, pharaoh\n\nDescendants\n \n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲣⲣⲟ"
+                "word": "ⲣⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲟⲩⲣⲟ"
+                "word": "ⲟⲩⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-boh",
+                "word": "ⲡⲟⲩⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲣⲣⲁ"
+                "word": "ⲣⲣⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲉⲣⲣⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲓⲣⲣⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲉⲣⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲣⲣⲟ"
+                "word": "ⲣⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲉⲣⲟ"
+                "word": "ⲉⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲣⲣⲟ"
+                "word": "ⲣⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲉⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲟⲩⲣⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -910,12 +1371,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "the sky, heavens"
+              "the sky, heavens\n\nAlternative forms\n \n\nDescendants\n  Sahidic, ⲫⲉ Bohairic, ⲡⲏ Fayyumic Akhmimic"
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲡⲉ"
+                "word": "ⲡⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": "Sahidic"
               }
             ]
           }
@@ -951,28 +1419,131 @@
             "parameters": "",
             "definitions": [
               "place",
-              "cenotaph"
+              "cenotaph\n\nDescendants\n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲙⲁ"
+                "word": "ⲙⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲙⲁ"
+                "word": "ⲙⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "q3": "only with {{m|cop|ⲛⲓⲃⲉⲛ}}"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-boh",
+                "word": "ⲙⲟⲩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "q3": "only with {{m|cop|ⲛⲓⲃⲉⲛ}}"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-boh",
+                "word": "ⲙⲁⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "q3": "only with {{m|cop|ⲛⲓⲃⲉⲛ}}"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop",
+                "word": "ⲛⲓⲃⲉⲛ",
+                "level": 0,
+                "template_type": "m",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲙⲉ"
+                "word": "ⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "q3": "before genitive {{m|cop|ⲛ-}}"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲙⲟⲩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "q3": "before genitive {{m|cop|ⲛ-}}"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲙⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "q3": "before genitive {{m|cop|ⲛ-}}"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop",
+                "word": "ⲛ-",
+                "level": 0,
+                "template_type": "m",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲙⲁ"
+                "word": "ⲙⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲙⲁ"
+                "word": "ⲙⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -987,12 +1558,33 @@
             "parameters": "",
             "definitions": [
               "to be true",
-              "to be justified"
+              "to be justified\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
-                "language": "1",
-                "word": "cop-sah"
+                "language": "cop-sah",
+                "word": "ⲧⲙⲁⲓⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "derived",
+                "params": {
+                  "der": "1"
+                },
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲧⲙⲁⲉⲓⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "derived",
+                "params": {
+                  "der": "1"
+                },
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1024,16 +1616,29 @@
             "part_of_speech": "verb",
             "parameters": "",
             "definitions": [
-              "[intransitive] to go, to walk, to travel"
+              "[intransitive] to go, to walk, to travel\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲙⲟϣⲓ"
+                "word": "ⲙⲟϣⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲙⲟⲟϣⲉ"
+                "word": "ⲙⲟⲟϣⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1070,36 +1675,79 @@
             "parameters": "",
             "definitions": [
               "[definite] all, every",
-              "[indefinite] any"
+              "[indefinite] any\n\nDescendants\n \n \n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲛⲓⲙ"
+                "word": "ⲛⲓⲙ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲛⲓⲃⲉⲛ"
+                "word": "ⲛⲓⲃⲉⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲛⲓⲃⲓ"
+                "word": "ⲛⲓⲃⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲛⲓⲙ"
+                "word": "ⲛⲓⲙ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-oxy",
-                "word": "ⲛⲓⲙ"
+                "word": "ⲛⲓⲙ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-ppp",
-                "word": "ⲛⲓⲃ"
+                "word": "ⲛⲓⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲛⲓⲙ"
+                "word": "ⲛⲓⲙ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1120,16 +1768,29 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "lord"
+              "lord\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲛⲏⲃ"
+                "word": "ⲛⲏⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲛⲏⲃ"
+                "word": "ⲛⲏⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1151,7 +1812,8 @@
             "parameters": "",
             "definitions": [
               "mistress, lady "
-            ]
+            ],
+            "quotes": []
           }
         ],
         "etymology_number": 3,
@@ -1184,31 +1846,72 @@
             "parameters": "",
             "definitions": [
               "damage",
-              "iniquity, sin"
+              "iniquity, sin\n\nDerived terms\n nby n ḥwṱ\n\nDescendants\n \n \n \n \n "
             ],
+            "quotes": [],
             "derived_terms": [
               "nby n ḥwṱ"
             ],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲛⲁⲃⲉ"
+                "word": "ⲛⲁⲃⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲛⲟⲃⲓ"
+                "word": "ⲛⲟⲃⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲛⲁⲃⲓ"
+                "word": "ⲛⲁⲃⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲛⲁϥⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲛⲁⲃⲉ"
+                "word": "ⲛⲁⲃⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲛⲟⲃⲉ"
+                "word": "ⲛⲟⲃⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1242,12 +1945,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "gold"
+              "gold\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲛⲟⲩⲃ"
+                "word": "ⲛⲟⲩⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1281,12 +1991,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "thing"
+              "thing\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲛⲕⲁ"
+                "word": "ⲛⲕⲁ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1320,24 +2037,49 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "god"
+              "god\n\nDescendants\n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲛⲟⲩⲛⲧⲉ"
+                "word": "ⲛⲟⲩⲛⲧⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲛⲟⲩϯ"
+                "word": "ⲛⲟⲩϯ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲛⲟⲩϯ"
+                "word": "ⲛⲟⲩϯ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲛⲟⲩⲧⲉ"
+                "word": "ⲛⲟⲩⲧⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1372,16 +2114,32 @@
             "parameters": "",
             "definitions": [
               "sun",
-              "[prefixed with ] the god Ra"
+              "[prefixed with ] the god Ra\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲣⲏ"
-              },
-              {
-                "language": "en",
-                "word": "Re"
+                "word": "ⲣⲏ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [
+                  {
+                    "language": "en",
+                    "word": "Re",
+                    "level": 1,
+                    "template_type": "desc",
+                    "edge_type": "borrowed",
+                    "params": {
+                      "bor": "1"
+                    },
+                    "children": [],
+                    "dialect": null
+                  }
+                ],
+                "dialect": null
               }
             ]
           }
@@ -1416,32 +2174,189 @@
             "parameters": "",
             "definitions": [
               "human, human being",
-              "man, male"
+              "man, male\n\nDescendants\n \n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲣⲱⲙⲉ"
+                "word": "ⲣⲱⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-akh",
+                "word": "ⲣⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲣⲱⲙⲓ"
+                "word": "ⲣⲱⲙⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-boh",
+                "word": "ⲣⲉⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲗⲱⲙⲓ"
+                "word": "ⲗⲱⲙⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲗⲟⲙⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲣⲱⲙⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲗⲉⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲗⲉ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲣⲉⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲣⲱⲙⲉ"
+                "word": "ⲣⲱⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-lyc",
+                "word": "ⲣⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲣⲱⲙⲉ"
+                "word": "ⲣⲱⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-old",
+                "word": "ⲣⲟⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲣⲱⲙⲉ"
+                "word": "ⲣⲱⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲣⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲣⲉⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲣⲱⲙ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1475,28 +2390,59 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "tongue"
+              "tongue\n\nDescendants\n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲗⲉⲥ"
+                "word": "ⲗⲉⲥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲗⲁⲥ"
+                "word": "ⲗⲁⲥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲗⲉⲥ"
+                "word": "ⲗⲉⲥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲗⲁⲥ"
+                "word": "ⲗⲁⲥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲗⲁⲥ"
+                "word": "ⲗⲁⲥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1523,12 +2469,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "bird"
+              "bird\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ϩⲁⲗⲏⲧ"
+                "word": "ϩⲁⲗⲏⲧ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1556,12 +2509,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "husband"
+              "husband\n\nDescendants\n  Sahidic Bohairic, ϩⲉⲓ Fayyumic Akhmimic, ϩⲉⲉⲓ Lycopolitan"
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ϩⲁⲓ"
+                "word": "ϩⲁⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": "Sahidic"
               }
             ]
           }
@@ -1582,12 +2542,19 @@
             "part_of_speech": "verb",
             "parameters": "",
             "definitions": [
-              "[intransitive] to fall, to descend, to perish"
+              "[intransitive] to fall, to descend, to perish\n\nDescendants\n  Sahidic, ϩⲉⲓ Bohairic"
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ϩⲉ"
+                "word": "ϩⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": "Sahidic"
               }
             ]
           }
@@ -1621,28 +2588,69 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "wife"
+              "wife\n\nDescendants\n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ϩⲓⲙⲉ"
+                "word": "ϩⲓⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ϩⲏⲙ"
+                "word": "ϩⲏⲙ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ϩⲓⲙⲉ"
+                "word": "ϩⲓⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ϩⲓⲙⲉ"
+                "word": "ϩⲓⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ϩⲓⲙⲉ"
+                "word": "ϩⲓⲙⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ϩⲓⲙ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1676,12 +2684,29 @@
             "part_of_speech": "preposition",
             "parameters": "",
             "definitions": [
-              "and, with, or"
+              "and, with, or\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-old",
-                "word": "ⳍⲗ-"
+                "word": "ⳍⲗ-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "egy",
+                "word": "ḥnꜥ jpd ⸢-nb.t]",
+                "level": 0,
+                "template_type": "m",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1715,16 +2740,34 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "chief, superior, master"
+              "chief, superior, master\n\nDescendants\n \n\nPrefixed with definite article pꜣ:\n\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "grc",
-                "word": "ρι-"
+                "word": "ρι-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "bor": "1"
+                },
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "grc",
-                "word": "φρι-"
+                "word": "φρι-",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "borrowed",
+                "params": {
+                  "bor": "1",
+                  "der": "1"
+                },
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1758,20 +2801,39 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "flower"
+              "flower\n\nDescendants\n \n  \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ϩⲣⲏⲣⲓ"
+                "word": "ϩⲣⲏⲣⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ϩⲗⲏⲣⲓ"
+                "word": "ϩⲗⲏⲣⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ϩⲣⲏⲣⲉ"
+                "word": "ϩⲣⲏⲣⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1805,8 +2867,9 @@
             "part_of_speech": "verb",
             "parameters": "",
             "definitions": [
-              "to fly"
+              "to fly\n\nDerived terms\n \n\nDescendants\n "
             ],
+            "quotes": [],
             "derived_terms": [
               "",
               "hꜥleṱ"
@@ -1814,7 +2877,13 @@
             "descendants": [
               {
                 "language": "cop",
-                "word": "ϩⲱⲗ"
+                "word": "ϩⲱⲗ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1850,12 +2919,19 @@
             "definitions": [
               "silver",
               "silver coin",
-              "money"
+              "money\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ϩⲁⲧ"
+                "word": "ϩⲁⲧ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1890,16 +2966,29 @@
             "parameters": "",
             "definitions": [
               "horse",
-              "team of horses"
+              "team of horses\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ϩⲑⲟ"
+                "word": "ϩⲑⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ϩⲧⲟ"
+                "word": "ϩⲧⲟ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1933,28 +3022,69 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "teaching"
+              "teaching\n\nDescendants\n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲥⲃⲟⲩ"
+                "word": "ⲥⲃⲟⲩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲥⲃⲱ"
+                "word": "ⲥⲃⲱ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲥⲃⲱ"
+                "word": "ⲥⲃⲱ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲥⲃⲱ"
+                "word": "ⲥⲃⲱ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-lyc",
+                "word": "ⲥⲃⲟⲩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲥⲃⲱ"
+                "word": "ⲥⲃⲱ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -1982,12 +3112,19 @@
             "parameters": "",
             "definitions": [
               "[feminine] sword",
-              "[masculine] knife"
+              "[masculine] knife\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲥⲏϥⲓ"
+                "word": "ⲥⲏϥⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2022,12 +3159,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "brother"
+              "brother\n\nDescendants\n  Sahidic Bohairic, ⲥⲁⲛ Fayyumic Akhmimic"
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲥⲟⲛ"
+                "word": "ⲥⲟⲛ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": "Sahidic"
               }
             ]
           }
@@ -2061,32 +3205,89 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "blood"
+              "blood\n\nDescendants\n \n \n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲥⲛⲁϥ"
+                "word": "ⲥⲛⲁϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲥⲛⲟϥ"
+                "word": "ⲥⲛⲟϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲥⲛⲁϥ"
+                "word": "ⲥⲛⲁϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ⲥⲛⲟϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-lyc",
-                "word": "ⲥⲛⲁϥ"
+                "word": "ⲥⲛⲁϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-old",
-                "word": "ⲥⲛⲟⲃ"
+                "word": "ⲥⲛⲟⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲥⲛⲟϥ"
+                "word": "ⲥⲛⲟϥ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲥⲛⲟⲃ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2118,12 +3319,21 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "[usually, in the plural] official, magistrate"
+              "[usually, in the plural] official, magistrate\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ⲥⲓⲟⲩⲣ"
+                "word": "ⲥⲓⲟⲩⲣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": {
+                  "t": "eunuch"
+                },
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2157,12 +3367,19 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "locust"
+              "locust\n\nDescendants\n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop",
-                "word": "ϣϫⲉ"
+                "word": "ϣϫⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2190,20 +3407,49 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "son"
+              "son\n\nDescendants\n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ϣⲏⲣⲓ"
+                "word": "ϣⲏⲣⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ϣⲏⲗⲓ"
+                "word": "ϣⲏⲗⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-fay",
+                "word": "ϣⲏⲣⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ϣⲏⲣⲉ"
+                "word": "ϣⲏⲣⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2238,24 +3484,49 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "reed, rush"
+              "reed, rush\n\nDescendants\n \n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-akh",
-                "word": "ⲕⲉϣ"
+                "word": "ⲕⲉϣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-boh",
-                "word": "ⲕⲁϣ"
+                "word": "ⲕⲁϣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-fay",
-                "word": "ⲕⲉϣ"
+                "word": "ⲕⲉϣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲕⲁϣ"
+                "word": "ⲕⲁϣ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2289,16 +3560,52 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "brick"
+              "brick\n\nDescendants\n \n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲧⲱⲃⲓ"
+                "word": "ⲧⲱⲃⲓ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲧⲱⲃⲉ"
+                "word": "ⲧⲱⲃⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ⲧⲱⲱⲃⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [
+                  {
+                    "language": "ar",
+                    "word": "طُوب",
+                    "level": 1,
+                    "template_type": "desctree",
+                    "edge_type": "borrowed",
+                    "params": {
+                      "bor": "1"
+                    },
+                    "children": [],
+                    "dialect": null
+                  }
+                ],
+                "dialect": null
               }
             ]
           }
@@ -2332,16 +3639,29 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "neighbor"
+              "neighbor\n\nDescendants\n \n "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ⲑⲉϣⲉ"
+                "word": "ⲑⲉϣⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ⲧⲉϣⲉ"
+                "word": "ⲧⲉϣⲉ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }
@@ -2375,16 +3695,59 @@
             "part_of_speech": "noun",
             "parameters": "",
             "definitions": [
-              "apple"
+              "apple\n\nAlternative forms\n  \n\nDescendants\n \n  "
             ],
+            "quotes": [],
             "descendants": [
               {
                 "language": "cop-boh",
-                "word": "ϫⲉⲙⲫⲉϩ"
+                "word": "ϫⲉⲙⲫⲉϩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               },
               {
                 "language": "cop-sah",
-                "word": "ϫⲙ̄ⲡⲉϩ"
+                "word": "ϫⲙ̄ⲡⲉϩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ϫⲉⲙⲡⲉϩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ϫⲙ̄ⲡⲏϩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
+              },
+              {
+                "language": "cop-sah",
+                "word": "ϫⲏⲡⲉϩ",
+                "level": 0,
+                "template_type": "desc",
+                "edge_type": "inherited",
+                "params": null,
+                "children": [],
+                "dialect": null
               }
             ]
           }

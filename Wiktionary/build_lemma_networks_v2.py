@@ -43,7 +43,7 @@ class EgocentricLemmaNetworkBuilder:
         self.next_network_id += 1
         return network_id
     
-    def create_node(self, language, form, pos='unknown', meanings=None, 
+    def create_node(self, language, form, pos='unknown', meanings=None, quotes=None,
                     hieroglyphs=None, transliteration=None, period=None, 
                     dialect=None, etymology_index=None, definition_index=None):
         """Create a node dictionary"""
@@ -58,7 +58,9 @@ class EgocentricLemmaNetworkBuilder:
             'transliteration': transliteration or form,
             'hieroglyphs': hieroglyphs,
             'part_of_speech': pos,
-            'meanings': meanings or [],
+            'meanings': meanings,
+            'quotes': quotes or [],
+            'quotes': quotes or [],
             'period': period,
             'dialects': dialect or [],  # Changed to plural and always a list
             'etymology_index': etymology_index,
@@ -405,6 +407,7 @@ class EgocentricLemmaNetworkBuilder:
                     added_derived_terms = set()  # Track Egyptian derived forms
                     pos = defn.get('part_of_speech', 'unknown')
                     meanings = defn.get('definitions', [])
+                    quotes = defn.get('quotes', [])
                     
                     # Extract hieroglyphs from definition or parameters
                     hieroglyphs = defn.get('hieroglyphs')
@@ -421,7 +424,7 @@ class EgocentricLemmaNetworkBuilder:
                         language='egy',
                         form=lemma_form,
                         pos=pos,
-                        meanings=meanings,
+                        meanings=meanings, quotes=quotes,
                         hieroglyphs=hieroglyphs,
                         etymology_index=etym_idx,
                         definition_index=defn_idx  # Track which definition this is
@@ -430,8 +433,7 @@ class EgocentricLemmaNetworkBuilder:
                     pos_main_nodes.append(main_node)
                     
                     if lemma_form == 'ꜣ' and etym_idx == 0 and defn_idx == 0:
-                        print(f"   DEBUG: Created main node, nodes now: {len(network['nodes'])}")
-                        print(f"   DEBUG: Network root lemma: {lemma_form}")
+                        pass
                     
                     # Add alternative forms as variant nodes with temporal evolution
                     # Group by inflection type (base, plural, godhood, etc.) for separate chains
@@ -473,7 +475,7 @@ class EgocentricLemmaNetworkBuilder:
                             language='egy',
                             form=alt_translit,
                             pos=pos,
-                            meanings=meanings,  # Same meanings as main form
+                            meanings=meanings, quotes=quotes,  # Same meanings as main form
                             hieroglyphs=alt_hieroglyphs,
                             transliteration=alt_translit,
                             period=period,
@@ -608,11 +610,30 @@ class EgocentricLemmaNetworkBuilder:
                     descendants = defn.get('descendants', [])
                     
                     def process_descendants_recursive(desc_list, parent_node, parent_lang):
-                        """Recursively process descendants and their children"""
+                        """Recursively process descendants and their children.
+                        
+                        When a descendant has edge_type='borrowed', it attaches to the 
+                        previously processed sibling node (the 'last word mentioned') 
+                        rather than to the parent. This models that e.g. Old Nubian 
+                        borrowed from Demotic, not directly from Egyptian.
+                        """
+                        last_inherited_node = None  # Track most recent inherited sibling for bor=1
+                        last_inherited_lang = None
+                        
                         for desc in desc_list:
                             desc_lang = desc.get('language', '')
                             desc_word = desc.get('word', '').split('<')[0].strip()
                             desc_children = desc.get('children', [])
+                            desc_edge_type = desc.get('edge_type', 'inherited')
+                            
+                            # Resolve nested templates like {{l|egx-dem|pr-ꜥꜣ}}
+                            if desc_word and '{{' in desc_word:
+                                import re
+                                nested = re.search(r'\{\{(?:l|m|link|mention)\|[^|]+\|([^|}]+)', desc_word)
+                                if nested:
+                                    desc_word = nested.group(1).strip()
+                                else:
+                                    continue  # Skip unresolvable template text
                             
                             if not desc_word:
                                 continue
@@ -631,6 +652,19 @@ class EgocentricLemmaNetworkBuilder:
                             
                             standard_lang = lang_map.get(desc_lang, desc_lang)
                             
+                            # Determine the actual parent for this descendant:
+                            # - If borrowed (bor=1), attach to the last INHERITED sibling
+                            #   (e.g. both Old Nubian AND Greek borrow from Demotic)
+                            # - Otherwise attach to the parent_node (normal inheritance)
+                            if desc_edge_type == 'borrowed' and last_inherited_node is not None:
+                                effective_parent = last_inherited_node
+                                effective_parent_lang = last_inherited_lang
+                                edge_label = 'BORROWED'
+                            else:
+                                effective_parent = parent_node
+                                effective_parent_lang = parent_lang
+                                edge_label = 'INHERITED'
+                            
                             # Process Egyptian-family languages (dem, cop) with full descendant tracking
                             # Process other languages (Greek, Arabic, etc.) as leaf nodes only
                             if standard_lang in ['dem', 'cop']:
@@ -644,21 +678,26 @@ class EgocentricLemmaNetworkBuilder:
                                     if standard_lang == 'cop':
                                         self.add_dialect_to_node(existing_node, desc_lang)
                                     
-                                    # Create edge from parent if not already connected
-                                    edge_exists = any(e['from'] == parent_node['id'] and e['to'] == existing_node['id'] 
+                                    # Create edge from effective parent if not already connected
+                                    edge_exists = any(e['from'] == effective_parent['id'] and e['to'] == existing_node['id'] 
                                                      for e in network['edges'])
                                     if not edge_exists:
                                         edge = self.create_edge(
-                                            from_id=parent_node['id'],
+                                            from_id=effective_parent['id'],
                                             to_id=existing_node['id'],
-                                            edge_type='INHERITED',
-                                            notes=f'{parent_lang.title()} → {standard_lang.title()}'
+                                            edge_type=edge_label,
+                                            notes=f'{effective_parent_lang.title()} → {standard_lang.title()}'
                                         )
                                         network['edges'].append(edge)
                                     
                                     # Process children
                                     if desc_children:
                                         process_descendants_recursive(desc_children, existing_node, standard_lang)
+                                    
+                                    # Track as last-inherited for subsequent borrowed siblings
+                                    if desc_edge_type != 'borrowed':
+                                        last_inherited_node = existing_node
+                                        last_inherited_lang = standard_lang
                                 
                                 elif desc_key not in added_descendants:
                                     # Node doesn't exist - create it
@@ -673,22 +712,26 @@ class EgocentricLemmaNetworkBuilder:
                                     )
                                     network['nodes'].append(desc_node)
                                     
-                                    # Create INHERITED edge from parent to this descendant
+                                    # Create edge from effective parent to this descendant
                                     edge = self.create_edge(
-                                        from_id=parent_node['id'],
+                                        from_id=effective_parent['id'],
                                         to_id=desc_node['id'],
-                                        edge_type='INHERITED',
-                                        notes=f'{parent_lang.title()} → {standard_lang.title()}'
+                                        edge_type=edge_label,
+                                        notes=f'{effective_parent_lang.title()} → {standard_lang.title()}'
                                     )
                                     network['edges'].append(edge)
                                     
                                     # Recursively process children of this descendant
                                     if desc_children:
                                         process_descendants_recursive(desc_children, desc_node, standard_lang)
+                                    
+                                    # Track as last-inherited for subsequent borrowed siblings
+                                    if desc_edge_type != 'borrowed':
+                                        last_inherited_node = desc_node
+                                        last_inherited_lang = standard_lang
                             
                             else:
                                 # Non-Egyptian language (Greek, Arabic, etc.) - add as leaf node
-                                # Also add their immediate children as additional leaf nodes
                                 desc_key = (standard_lang, desc_word)
                                 
                                 # Check if already added
@@ -708,12 +751,12 @@ class EgocentricLemmaNetworkBuilder:
                                     )
                                     network['nodes'].append(desc_node)
                                     
-                                    # Create INHERITED edge from parent
+                                    # Create edge from effective parent
                                     edge = self.create_edge(
-                                        from_id=parent_node['id'],
+                                        from_id=effective_parent['id'],
                                         to_id=desc_node['id'],
-                                        edge_type='INHERITED',
-                                        notes=f'{parent_lang.title()} → {standard_lang.title()}'
+                                        edge_type=edge_label,
+                                        notes=f'{effective_parent_lang.title()} → {standard_lang.title()}'
                                     )
                                     network['edges'].append(edge)
                                     
@@ -745,18 +788,27 @@ class EgocentricLemmaNetworkBuilder:
                                                     )
                                                     network['edges'].append(edge)
                                     
+                                    # Track as last-inherited for subsequent borrowed siblings
+                                    if desc_edge_type != 'borrowed':
+                                        last_inherited_node = desc_node
+                                        last_inherited_lang = standard_lang
+                                    
                                 elif existing_node:
                                     # Node exists - just add edge if needed
-                                    edge_exists = any(e['from'] == parent_node['id'] and e['to'] == existing_node['id'] 
+                                    edge_exists = any(e['from'] == effective_parent['id'] and e['to'] == existing_node['id'] 
                                                      for e in network['edges'])
                                     if not edge_exists:
                                         edge = self.create_edge(
-                                            from_id=parent_node['id'],
+                                            from_id=effective_parent['id'],
                                             to_id=existing_node['id'],
-                                            edge_type='INHERITED',
-                                            notes=f'{parent_lang.title()} → {standard_lang.title()}'
+                                            edge_type=edge_label,
+                                            notes=f'{effective_parent_lang.title()} → {standard_lang.title()}'
                                         )
                                         network['edges'].append(edge)
+                                    
+                                    if desc_edge_type != 'borrowed':
+                                        last_inherited_node = existing_node
+                                        last_inherited_lang = standard_lang
                     
                     # Start recursive processing with latest_form_node as root
                     # Descendants descend from the LATEST dated form (or main if no dated forms)
@@ -922,7 +974,7 @@ class EgocentricLemmaNetworkBuilder:
                                 language=item_lang,
                                 form=item_form,
                                 pos='unknown',
-                                meanings=meanings,
+                                meanings=meanings, quotes=quotes,
                                 etymology_index=None
                             )
                             network['nodes'].append(node)
@@ -980,33 +1032,9 @@ class EgocentricLemmaNetworkBuilder:
                         )
                         network['edges'].append(edge)
                 
-                # Create VARIANT edges between different POS main nodes
-                # (e.g., verb wꜥb ↔ adjective wꜥb ↔ noun wꜥb)
-                if len(pos_main_nodes) > 1:
-                    for i in range(len(pos_main_nodes) - 1):
-                        pos1 = pos_main_nodes[i]['part_of_speech']
-                        pos2 = pos_main_nodes[i + 1]['part_of_speech']
-                        edge = self.create_edge(
-                            from_id=pos_main_nodes[i]['id'],
-                            to_id=pos_main_nodes[i + 1]['id'],
-                            edge_type='VARIANT',
-                            notes=f'Part-of-speech variant: {pos1} ↔ {pos2}'
-                        )
-                        network['edges'].append(edge)
-                    
                     # Only add network if it has nodes (inside defn loop)
-                    if lemma_form == 'ꜣ' and etym_idx == 0 and defn_idx == 0:
-                        print(f"   DEBUG: About to check append condition")
-                        print(f"   DEBUG: network['nodes'] = {network['nodes']}")
-                        print(f"   DEBUG: bool(network['nodes']) = {bool(network['nodes'])}")
-                    
                     if network['nodes']:
                         networks.append(network)
-                        if lemma_form == 'ꜣ' and etym_idx == 0 and defn_idx == 0:
-                            print(f"   DEBUG: APPENDED network for ꜣ! Total networks now: {len(networks)}")
-                    else:
-                        if lemma_form == 'ꜣ' and etym_idx == 0 and defn_idx == 0:
-                            print(f"   DEBUG: FAILED to append ꜣ network! Nodes empty? {network['nodes']}")
         
         print(f"   DEBUG: Total definitions processed: {total_defs_processed}")
         print(f"   DEBUG: Created networks: {len(networks)}")
@@ -1236,6 +1264,7 @@ class EgocentricLemmaNetworkBuilder:
                         for defn in etymology.get('definitions', []):
                             pos = defn.get('part_of_speech', 'unknown')
                             meanings = defn.get('definitions', [])
+                            quotes = defn.get('quotes', [])
                             
                             # Check if this Demotic word already exists in the network
                             existing_dem = next((n for n in egy_network['nodes'] 
@@ -1258,7 +1287,7 @@ class EgocentricLemmaNetworkBuilder:
                                     language='dem',
                                     form=lemma_form,
                                     pos=pos,
-                                    meanings=meanings,
+                                    meanings=meanings, quotes=quotes,
                                     etymology_index=etym_idx
                                 )
                                 egy_network['nodes'].append(dem_node)
@@ -1326,6 +1355,7 @@ class EgocentricLemmaNetworkBuilder:
                         for defn in etymology.get('definitions', []):
                             pos = defn.get('part_of_speech', 'unknown')
                             meanings = defn.get('definitions', [])
+                            quotes = defn.get('quotes', [])
                             dialect = self.extract_coptic_dialect(lemma_form, defn)
                             
                             # Check if this Coptic word already exists in the network
@@ -1353,7 +1383,7 @@ class EgocentricLemmaNetworkBuilder:
                                     language='cop',
                                     form=lemma_form,
                                     pos=pos,
-                                    meanings=meanings,
+                                    meanings=meanings, quotes=quotes,
                                     dialect=dialect,
                                     etymology_index=etym_idx
                                 )
@@ -1438,12 +1468,13 @@ class EgocentricLemmaNetworkBuilder:
                     for defn in etymology.get('definitions', []):
                         pos = defn.get('part_of_speech', 'unknown')
                         meanings = defn.get('definitions', [])
+                        quotes = defn.get('quotes', [])
                         
                         dem_node = self.create_node(
                             language='dem',
                             form=lemma_form,
                             pos=pos,
-                            meanings=meanings
+                            meanings=meanings, quotes=quotes
                         )
                         network['nodes'].append(dem_node)
                     
@@ -1479,13 +1510,14 @@ class EgocentricLemmaNetworkBuilder:
                     for defn in etymology.get('definitions', []):
                         pos = defn.get('part_of_speech', 'unknown')
                         meanings = defn.get('definitions', [])
+                        quotes = defn.get('quotes', [])
                         dialect = self.extract_coptic_dialect(lemma_form, defn)
                         
                         cop_node = self.create_node(
                             language='cop',
                             form=lemma_form,
                             pos=pos,
-                            meanings=meanings,
+                            meanings=meanings, quotes=quotes,
                             dialect=dialect,
                             etymology_index=etym_idx
                         )
@@ -1516,7 +1548,7 @@ class EgocentricLemmaNetworkBuilder:
                                     language='cop',
                                     form=alt_form,
                                     pos=pos,
-                                    meanings=meanings,
+                                    meanings=meanings, quotes=quotes,
                                     dialect=alt_dialect,
                                     etymology_index=etym_idx
                                 )
@@ -1684,7 +1716,7 @@ class EgocentricLemmaNetworkBuilder:
                                     language=item_lang,
                                     form=item_form,
                                     pos='unknown',
-                                    meanings=meanings,
+                                    meanings=meanings, quotes=quotes,
                                     dialect=None
                                 )
                                 network['nodes'].append(node)

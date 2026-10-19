@@ -19,7 +19,7 @@ script_dir = Path(__file__).parent
 os.chdir(script_dir)
 
 # Copy JSON file if it doesn't exist in visualize directory
-json_source = script_dir.parent / 'lemma_networks.json'
+json_source = script_dir.parent / 'archive' / 'lemma_networks.json'
 json_dest = script_dir / 'lemma_networks.json'
 
 if json_source.exists() and not json_dest.exists():
@@ -28,10 +28,46 @@ if json_source.exists() and not json_dest.exists():
     print(f"✓ JSON file copied")
 
 class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def translate_path(self, path):
+        # Get default translation
+        translated_path = super().translate_path(path)
+        
+        # If the file is a json file, doesn't exist here, but exists in the parent directory, serve it from parent
+        if translated_path.endswith('.json') and not os.path.exists(translated_path):
+            parent_path = os.path.join(os.path.dirname(os.getcwd()), os.path.basename(translated_path))
+            if os.path.exists(parent_path):
+                return parent_path
+                
+        return translated_path
+
     def do_GET(self):
         # Redirect root to index.html
         if self.path == '/':
             self.path = '/index.html'
+        
+        # For JSON files, serve as UTF-8 (transcoding any legacy UTF-16 files)
+        if self.path.endswith('.json'):
+            file_path = self.translate_path(self.path)
+            if os.path.exists(file_path):
+                try:
+                    with open(file_path, 'rb') as f:
+                        raw = f.read()
+                    if raw[:2] in (b'\xff\xfe', b'\xfe\xff'):
+                        encoded = raw.decode('utf-16').encode('utf-8')
+                    else:
+                        encoded = raw.decode('utf-8-sig').encode('utf-8')
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'application/json; charset=utf-8')
+                    self.send_header('Content-Length', str(len(encoded)))
+                    self.send_header('Access-Control-Allow-Origin', '*')
+                    self.send_header('Cache-Control', 'no-store, no-cache, must-revalidate')
+                    super(http.server.SimpleHTTPRequestHandler, self).end_headers()
+                    self.wfile.write(encoded)
+                    return
+                except (UnicodeDecodeError, UnicodeError):
+                    # Not UTF-16, fall through to default handler
+                    pass
+        
         return super().do_GET()
     
     def end_headers(self):

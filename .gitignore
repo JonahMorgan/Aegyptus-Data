@@ -29,3 +29,7 @@ Etymological Dictionary of Egyptian/debug
 # Generated data files (optional - uncomment if you don't want to track these)
 # Data Collection and Management/Wiktionary/*.json
 # Data Collection and Management/Wiktionary/*.jsonl
+
+# Regenerable build outputs
+Unified/output/
+Coptic Etymological Dictionary/ocr_cache/

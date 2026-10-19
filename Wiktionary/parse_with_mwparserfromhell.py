@@ -60,73 +60,77 @@ def parse_egy_hieroforms(template) -> List[Dict[str, str]]:
     
     return alt_forms
 
-def extract_definitions(wikicode, level: int = 1) -> List[str]:
-    """Extract definition lines (starting with #) at a specific nesting level."""
+def extract_definitions(wikicode, level: int = 1):
+    """Extract definition lines and quotes."""
     definitions = []
+    quotes = []
     text = str(wikicode)
     
-    for line in text.split('\n'):
-        # Count leading # characters
-        stripped = line.lstrip()
-        if not stripped.startswith('#'):
-            continue
-        
-        hash_count = len(line) - len(line.lstrip('#'))
-        if hash_count == level:
-            # Remove the # and clean up
-            defn = stripped[1:].strip()
-            
-            # Parse the definition to clean up templates
-            defn_code = mwparserfromhell.parse(defn)
-            
-            # Clean up common templates - iterate over a list copy to avoid modification issues
-            templates = list(defn_code.filter_templates())
-            for template in templates:
-                try:
-                    name = str(template.name).strip()
-                    if name == 'lb':
-                        # Labels like {{lb|egy|intransitive}}
-                        labels = [str(p.value).strip() for p in template.params[1:]]
-                        defn_code.replace(template, f"[{', '.join(labels)}]")
-                    elif name == 'defdate':
-                        params = parse_template_params(template)
-                        date_str = list(params.values())[0] if params else ''
-                        defn_code.replace(template, f"(dated: {date_str})")
-                    elif name == 'ng':
-                        # Non-gloss definition
-                        params = parse_template_params(template)
-                        defn_code.replace(template, list(params.values())[0] if params else '')
-                    elif name == 'def-uncertain':
-                        defn_code.replace(template, '[uncertain]')
-                    elif name in ['alt form', 'alternative form of', 'altform']:
-                        # Alternative form templates - preserve the information
-                        params = parse_template_params(template)
-                        values = list(params.values())
-                        term = values[1] if len(values) > 1 else values[0] if values else ''
-                        defn_code.replace(template, f"Alternative form of {term}")
-                    elif name in ['m', 'l', 'w', 'taxfmt', 'cog', 'inh']:
-                        # Link templates - just extract the linked term
-                        params = parse_template_params(template)
-                        values = list(params.values())
-                        defn_code.replace(template, values[1] if len(values) > 1 else values[0] if values else '')
-                    elif name == 'q':
-                        # Qualifier
-                        params = parse_template_params(template)
-                        defn_code.replace(template, ' '.join(params.values()))
-                    elif name == 'sup':
-                        defn_code.replace(template, '')
-                except (ValueError, AttributeError):
-                    # Template already replaced or other issue, skip
-                    pass
-            
-            # Remove any remaining HTML tags
-            clean_text = str(defn_code).strip()
-            clean_text = mwparserfromhell.parse(clean_text).strip_code()
-            
-            if clean_text:
-                definitions.append(clean_text)
+    current_block = []
+    is_quote = False
     
-    return definitions
+    def process_block(block, is_qt):
+        if not block: return
+        raw_text = '\n'.join(block)
+        
+        if is_qt:
+            quotes.append(raw_text.strip())
+            return
+            
+        import mwparserfromhell
+        defn_code = mwparserfromhell.parse(raw_text)
+        templates = list(defn_code.filter_templates())
+        for template in templates:
+            name = str(template.name).strip().lower()
+            try:
+                if name == 'lb':
+                    labels = [str(p.value).strip() for p in template.params[1:]]
+                    defn_code.replace(template, f"[{', '.join(labels)}]")
+                elif name == 'defdate':
+                    date_str = list(parse_template_params(template).values())[0] if parse_template_params(template) else ''
+                    defn_code.replace(template, f"(dated: {date_str})")
+                elif name == 'ng':
+                    defn_code.replace(template, list(parse_template_params(template).values())[0] if parse_template_params(template) else '')
+                elif name == 'def-uncertain':
+                    defn_code.replace(template, '[uncertain]')
+                elif name in ['alt form', 'alternative form of', 'altform']:
+                    params = list(parse_template_params(template).values())
+                    term = params[1] if len(params) > 1 else params[0] if params else ''
+                    defn_code.replace(template, f"Alternative form of {term}")
+                elif name in ['m', 'l', 'w', 'taxfmt', 'cog', 'inh']:
+                    params = list(parse_template_params(template).values())
+                    defn_code.replace(template, params[1] if len(params) > 1 else params[0] if params else '')
+                elif name == 'q':
+                    defn_code.replace(template, ' '.join(parse_template_params(template).values()))
+                elif name == 'sup':
+                    defn_code.replace(template, '')
+                elif name in ['q', 'quote', 'quotation']:
+                    quotes.append(str(template))
+                    defn_code.replace(template, '')
+            except (ValueError, AttributeError):
+                pass
+                
+        clean_text = mwparserfromhell.parse(str(defn_code).strip()).strip_code()
+        if clean_text: definitions.append(clean_text)
+
+    for line in text.split('\n'):
+        stripped = line.lstrip()
+        if stripped.startswith('#*') or stripped.startswith('#:'):
+            process_block(current_block, is_quote)
+            current_block = [stripped[2:].strip()]
+            is_quote = True
+        elif stripped.startswith('#'):
+            hash_count = len(line) - len(line.lstrip('#'))
+            if hash_count == level:
+                process_block(current_block, is_quote)
+                current_block = [stripped[1:].strip()]
+                is_quote = False
+        else:
+            if current_block:
+                current_block.append(line)
+                
+    process_block(current_block, is_quote)
+    return definitions, quotes
 
 def parse_pos_section(section_code, pos_name: str, subsection_level: int) -> Dict:
     """Parse a single part-of-speech section."""
@@ -147,7 +151,9 @@ def parse_pos_section(section_code, pos_name: str, subsection_level: int) -> Dic
                 break
     
     # Extract definitions
-    result['definitions'] = extract_definitions(section_code, level=1)
+    defs, quotes = extract_definitions(section_code, level=1)
+    result['definitions'] = defs
+    result['quotes'] = quotes
     
     # Check definitions for "Alternative form of X" pattern
     variant_forms_from_defs = []
@@ -297,227 +303,113 @@ def parse_pos_section(section_code, pos_name: str, subsection_level: int) -> Dic
         # Descendants
         elif heading_text == 'Descendants':
             descendants = []
-            # Parse raw wikitext to preserve nesting structure
             subsection_text = str(subsection)
-            lines = subsection_text.split('\n')
-            
-            parent_stack = []  # Stack to track parent descendants at each level
-            
-            for line in lines:
-                # Count asterisks AND colons to determine nesting level
-                # * = level 0 (direct descendant)
-                # *: = level 1 (child of previous *)
-                # ** = level 1 (descendant of previous level 0)
-                # **: = level 2, etc.
+            text_lines = []
+            parsing_lines = False
+            for line in subsection_text.split('\n'):
+                if '====' in line or '===' in line:
+                    if parsing_lines: break
+                    parsing_lines = True
+                    continue
+                if parsing_lines:
+                    text_lines.append(line)
+                    
+            if not text_lines:
+                text_lines = subsection_text.split('\n')
+                
+            parent_stack = []
+            for line in text_lines:
                 stripped = line.lstrip()
                 if stripped.startswith('*'):
-                    # Count consecutive asterisks and colons
-                    level = 0
-                    i = 0
+                    level = 0; i = 0
                     while i < len(stripped):
-                        if stripped[i] == '*':
-                            level += 1
-                            i += 1
-                        elif stripped[i] == ':':
-                            # Colon adds one more level (child relationship)
-                            level += 1
-                            i += 1
-                        elif stripped[i] == ' ':
-                            # Skip spaces
-                            i += 1
-                        else:
-                            break
-                    level = level - 1  # * = level 0, *: = level 1, ** = level 1, etc.
+                        if stripped[i] == '*': level += 1; i += 1
+                        elif stripped[i] == ':': level += 1; i += 1
+                        elif stripped[i] == ' ': i += 1
+                        else: break
+                    level -= 1
                     
-                    # Find {{desc}} or {{desctree}} template in this line
-                    import re
-                    desc_match = re.search(r'\{\{(desc|desctree)\|(.+)\}\}', line)
-                    if desc_match:
-                        template_type = desc_match.group(1)  # 'desc' or 'desctree'
-                        # Parse the desc/desctree template - need to handle nested templates carefully
-                        template_content = desc_match.group(2)
-                        
-                        # Split by | but respect nested templates {{...}}
-                        parts = []
-                        current_part = ""
-                        depth = 0
-                        i = 0
-                        while i < len(template_content):
-                            c = template_content[i]
-                            if i < len(template_content) - 1 and template_content[i:i+2] == '{{':
-                                depth += 1
-                                current_part += '{{'
-                                i += 2
+                    line_code = mwparserfromhell.parse(line)
+                    templates = list(line_code.filter_templates())
+                    
+                    # Track which languages we've already processed on THIS line
+                    # to avoid duplicates when desc + l/m templates appear together
+                    seen_langs_this_line = set()
+                    
+                    for t_idx, template in enumerate(templates):
+                        name = str(template.name).strip().lower()
+                        if name in ['desc', 'desctree', 'l', 'link', 'm', 'mention', 'cog', 'inh', 'der']:
+                            params = parse_template_params(template)
+                            positionals = [v for k, v in params.items() if k.isdigit() or not k]
+                            named_params = {k: v for k, v in params.items() if not k.isdigit() and k}
+                            
+                            if not positionals: continue
+                            lang = positionals[0]
+                            
+                            # If desc/desctree already handled this language on this line,
+                            # skip secondary l/m/mention templates for the same language
+                            if name in ['l', 'link', 'm', 'mention', 'cog'] and lang in seen_langs_this_line:
                                 continue
-                            elif i < len(template_content) - 1 and template_content[i:i+2] == '}}':
-                                depth -= 1
-                                current_part += '}}'
-                                i += 2
-                                continue
-                            elif c == '|' and depth == 0:
-                                parts.append(current_part.strip())
-                                current_part = ""
-                                i += 1
-                                continue
+                            
+                            words = positionals[1:]
+                            
+                            clean_words = []
+                            for w in words:
+                                # Resolve nested templates like {{l|egx-dem|pr-ꜥꜣ}}
+                                if w and '{{' in w:
+                                    import re
+                                    nested_match = re.search(r'\{\{(?:l|m|link|mention)\|[^|]+\|([^|}]+)', w)
+                                    if nested_match:
+                                        w = nested_match.group(1).strip()
+                                    else:
+                                        continue  # Skip unresolvable template text
+                                # Skip empty/dash placeholders
+                                if w and w != '-':
+                                    clean_w = w.split('<')[0].strip()
+                                    if clean_w: clean_words.append(clean_w)
+                                    
+                            if not clean_words:
+                                for j in range(1, 10):
+                                    if f'alt{j}' in named_params:
+                                        w = named_params[f'alt{j}'].lstrip('-').strip()
+                                        if w and w not in clean_words: clean_words.append(w)
+                                        
+                            if not clean_words and 'tr' in named_params:
+                                clean_words.append(named_params['tr'].strip())
+                            
+                            if not clean_words:
+                                edge_type = 'inherited'
+                                if 'bor' in named_params: edge_type = 'borrowed'
+                                elif 'calque' in named_params: edge_type = 'calque'
+                                elif 'der' in named_params: edge_type = 'derived'
+                                desc_entry = {'language': lang, 'word': None, 'level': level, 'template_type': name, 'edge_type': edge_type, 'params': named_params or None, 'children': [], 'is_language_marker': True, 'dialect': None}
                             else:
-                                current_part += c
-                                i += 1
-                        
-                        if current_part:
-                            parts.append(current_part.strip())
-                        
-                        if len(parts) >= 1:
-                            # First, separate named parameters from positional parameters
-                            positional = []
-                            named_params = {}
-                            
-                            for part in parts:
-                                # Check if this is a named parameter
-                                if '=' in part:
-                                    # Make sure the = isn't inside a nested template
-                                    equals_pos = part.find('=')
-                                    before_equals = part[:equals_pos]
-                                    if '{{' not in before_equals:
-                                        # This is a named parameter
-                                        key, val = part.split('=', 1)
-                                        named_params[key.strip()] = val.strip()
-                                        continue
+                                # Mark this language as seen on this line
+                                seen_langs_this_line.add(lang)
                                 
-                                # This is a positional parameter
-                                positional.append(part)
-                            
-                            # Now extract language from first positional parameter
-                            if len(positional) < 1:
-                                continue  # Skip if no positional parameters at all
-                            
-                            lang = positional[0]
-                            
-                            # Collect all word forms (remaining positional parameters after language)
-                            words = []
-                            
-                            for part in positional[1:]:
-                                # Skip if it's entirely a template
-                                if part.startswith('{{') and part.endswith('}}'):
-                                    continue
+                                dialect = None
+                                if t_idx + 1 < len(templates):
+                                    next_t = templates[t_idx + 1]
+                                    if str(next_t.name).strip().lower() in ['q', 'qualifier', 'i']:
+                                        q_params = list(parse_template_params(next_t).values())
+                                        if q_params: dialect = q_params[0]
                                 
-                                # Extract word, removing <alt:...> markup
-                                word = part.split('<')[0].strip()
-                                if word:
-                                    words.append(word)
+                                for w in clean_words:
+                                    edge_type = 'inherited'
+                                    if 'bor' in named_params: edge_type = 'borrowed'
+                                    elif 'calque' in named_params: edge_type = 'calque'
+                                    elif 'der' in named_params: edge_type = 'derived'
+                                    desc_entry = {'language': lang, 'word': w, 'level': level, 'template_type': name, 'edge_type': edge_type, 'params': named_params or None, 'children': [], 'dialect': dialect}
                             
-                            # If words contain only numeric placeholders or codes (like "665"),
-                            # prefer alt* parameters instead
-                            if words and all(w.isdigit() or len(w) < 3 for w in words):
-                                # Check if we have better alternatives in alt* params
-                                alt_words = []
-                                for i in range(1, 10):
-                                    alt_key = f'alt{i}'
-                                    if alt_key in named_params:
-                                        alt_value = named_params[alt_key]
-                                        # Remove prefixes like "-" (diacritical variants)
-                                        word = alt_value.lstrip('-').strip()
-                                        if word and word not in alt_words:
-                                            alt_words.append(word)
-                                
-                                # If we found good alternatives, use them instead
-                                if alt_words:
-                                    words = alt_words
-                            
-                            # If no words found, check for 'alt*' (alternative forms) parameters
-                            if not words:
-                                # Look for alt1, alt2, alt3, etc.
-                                for i in range(1, 10):
-                                    alt_key = f'alt{i}'
-                                    if alt_key in named_params:
-                                        alt_value = named_params[alt_key]
-                                        # Remove prefixes like "-" (diacritical variants)
-                                        word = alt_value.lstrip('-').strip()
-                                        if word and word not in words:
-                                            words.append(word)
-                            
-                            # If still no words found, check for 'tr' (transliteration) parameter
-                            if not words and 'tr' in named_params:
-                                tr_value = named_params['tr']
-                                # Extract word from {{l|lang|word}} template if present
-                                l_match = re.search(r'\{\{l\|[^|]+\|([^}|]+)', tr_value)
-                                if l_match:
-                                    words.append(l_match.group(1).strip())
-                                else:
-                                    words.append(tr_value.strip())
-                            
-                            # Check if this is a language-only marker (like {{desc|akk|-|bor=1}})
-                            if not words and '-' in positional:
-                                # Determine edge type from named parameters
-                                edge_type = 'inherited'  # default
-                                if 'bor' in named_params:
-                                    edge_type = 'borrowed'
-                                elif 'calque' in named_params:
-                                    edge_type = 'calque'
-                                elif 'der' in named_params:
-                                    edge_type = 'derived'
-                                
-                                # This is a language marker for children descendants
-                                desc_entry = {
-                                    'language': lang,
-                                    'word': None,  # No specific word
-                                    'level': level,
-                                    'template_type': template_type,
-                                    'edge_type': edge_type,
-                                    'params': named_params if named_params else None,
-                                    'children': [],
-                                    'is_language_marker': True
-                                }
-                                
-                                parent_stack_copy = parent_stack[:level]
-                                
-                                if level == 0:
-                                    descendants.append(desc_entry)
-                                    parent_stack = [desc_entry]
-                                else:
-                                    if parent_stack_copy:
-                                        parent_stack_copy[-1]['children'].append(desc_entry)
-                                        parent_stack = parent_stack_copy + [desc_entry]
-                            
-                            # Create a descendant entry for EACH word form
-                            # (Multiple forms in one {{desc}} or {{desctree}} are dialectal variants)
-                            for word in words:
-                                # Determine edge type from named parameters
-                                edge_type = 'inherited'  # default
-                                if 'bor' in named_params:
-                                    edge_type = 'borrowed'
-                                elif 'calque' in named_params:
-                                    edge_type = 'calque'
-                                elif 'der' in named_params:
-                                    edge_type = 'derived'
-                                
-                                desc_entry = {
-                                    'language': lang,
-                                    'word': word,
-                                    'level': level,
-                                    'template_type': template_type,  # 'desc' or 'desctree'
-                                    'edge_type': edge_type,  # inherited, borrowed, calque, derived
-                                    'params': named_params if named_params else None,
-                                    'children': []
-                                }
-                                
-                                # Adjust parent stack to current level
-                                parent_stack_copy = parent_stack[:level]
-                                
-                                # Add to appropriate parent
-                                if level == 0:
-                                    descendants.append(desc_entry)
-                                    # Update stack only for the first word of this template
-                                    if word == words[0]:
-                                        parent_stack = [desc_entry]
-                                else:
-                                    if parent_stack_copy:
-                                        parent_stack_copy[-1]['children'].append(desc_entry)
-                                        # Update stack only for the first word of this template
-                                        if word == words[0]:
-                                            parent_stack = parent_stack_copy + [desc_entry]
-            
-            if descendants:
-                result['descendants'] = descendants
+                                    while parent_stack and parent_stack[-1][0] >= level:
+                                        parent_stack.pop()
+                                    if parent_stack:
+                                        parent_stack[-1][1]['children'].append(desc_entry)
+                                    else:
+                                        descendants.append(desc_entry)
+                                    parent_stack.append((level, desc_entry))
+            if descendants: result['descendants'] = descendants
+
     
     return result
 
@@ -858,7 +750,7 @@ def main():
     # Define files to process
     files_to_process = [
         ('egyptian_lemmas.json', 'egyptian_lemmas_parsed_mwp.json', 'Egyptian'),
-        # ('demotic_lemmas.json', 'demotic_lemmas_parsed_mwp.json', 'Demotic'),
+        ('demotic_lemmas.json', 'demotic_lemmas_parsed_mwp.json', 'Demotic'),
         ('coptic_lemmas.json', 'coptic_lemmas_parsed_mwp.json', 'Coptic')
     ]
     
